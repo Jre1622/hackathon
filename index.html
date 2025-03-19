@@ -13,8 +13,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   </head>
   <body>
+    <!-- Pattern background -->
+    <div class="pattern-background"></div>
+
     <!-- Starry background -->
     <div class="stars" id="stars"></div>
+
+    <!-- Tooltip container -->
+    <div class="tooltip-container" id="tooltipContainer"></div>
 
     <!-- Canvas for Three.js -->
     <canvas id="globeCanvas"></canvas>
@@ -23,6 +29,12 @@
     <div class="title-container fade-in">
       <h1 class="main-title">The World's Largest Hackathon</h1>
       <p class="subtitle">Connecting innovators across continents</p>
+      <div class="prize-container">
+        <div class="prize-label">Total Prizes</div>
+        <div class="prize-amount">
+          <span id="prize-counter">$0</span>
+        </div>
+      </div>
     </div>
 
     <!-- Introduction panel -->
@@ -40,8 +52,8 @@
         <img src="https://cdn.worldvectorlogo.com/logos/netlify.svg" alt="Netlify" class="sponsor-logo" />
         <img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Cloudflare_Logo.png" alt="Cloudflare" class="sponsor-logo" />
         <img src="https://seeklogo.com/images/S/sentry-logo-36928B74C1-seeklogo.com.png" alt="Sentry" class="sponsor-logo" />
-        <img src="https://loops.so/favicon.png" alt="Loops" class="sponsor-logo" />
-        <img src="https://algorand.com/static/algorand-logo-white-782ed4f6bf657cec9c7f69f361eb20ce.svg" alt="Algorand Foundation" class="sponsor-logo" />
+        <img src="https://pbs.twimg.com/profile_images/1729539310058147840/iE5EGXW3_400x400.jpg" alt="Loops" class="sponsor-logo" />
+        <img src="https://pbs.twimg.com/profile_images/1805829136381861889/0fI5Zrbv_400x400.jpg" alt="Algorand Foundation" class="sponsor-logo" />
       </div>
     </div>
 
@@ -109,6 +121,14 @@
     <div class="register-cta">
       <a href="http://hackathon.dev" class="cta-button">Register Now</a>
       <p>Hosted by <span class="host">@gregisenberg</span></p>
+    </div>
+
+    <!-- Bolt.new logo -->
+    <div class="bolt-logo">
+      <a href="https://bolt.new" target="_blank">
+        <img src="https://pbs.twimg.com/profile_images/1880702021122342912/fe9TlQqJ_400x400.jpg" alt="Bolt.new" />
+        <span class="bolt-text">bolt<span class="bolt-dot">.</span>new</span>
+      </a>
     </div>
 
     <!-- Loading screen -->

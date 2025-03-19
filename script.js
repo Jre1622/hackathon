@@ -167,7 +167,7 @@ function createGlobe() {
   const cloudsMaterial = new THREE.MeshPhongMaterial({
     map: cloudsTexture,
     transparent: true,
-    opacity: 0.4,
+    opacity: 0.6,
   });
 
   const clouds = new THREE.Mesh(cloudsGeometry, cloudsMaterial);
@@ -175,7 +175,7 @@ function createGlobe() {
 
   // Animate clouds rotation slightly faster than the Earth
   setInterval(() => {
-    clouds.rotation.y += 0.0002;
+    clouds.rotation.y += 0.0003;
   }, 10);
 
   // Add point groups
@@ -361,7 +361,7 @@ function navigateToSection(sectionIndex) {
 // Camera positions for each section
 const cameraPositions = [
   { position: { x: 0, y: 0, z: 5 }, rotation: { x: 0, y: 0, z: 0 } },
-  { position: { x: 3, y: 1, z: 4 }, rotation: { x: 0, y: -0.5, z: 0 } },
+  { position: { x: 0, y: -0.5, z: 6 }, rotation: { x: 0, y: 0, z: 0 } },
   { position: { x: -4, y: 2, z: 3 }, rotation: { x: -0.3, y: 0.7, z: 0 } },
   { position: { x: 0, y: 0, z: 5 }, rotation: { x: 0, y: 0, z: 0 } },
   { position: { x: 0, y: 3, z: 4 }, rotation: { x: -0.5, y: 0, z: 0 } },
@@ -393,6 +393,15 @@ function showSection(sectionIndex) {
     controls.autoRotateSpeed = 0.5;
     connectionsGroup.clear();
 
+    // Handle title position
+    if (sectionIndex === 1) {
+      // Move title up for the intro section
+      titleContainer.classList.add("title-top");
+    } else {
+      // Reset title position for other sections
+      titleContainer.classList.remove("title-top");
+    }
+
     // Show relevant sections based on index
     switch (sectionIndex) {
       case 0: // Initial view
@@ -402,11 +411,13 @@ function showSection(sectionIndex) {
       case 1: // Introduction
         titleContainer.style.opacity = 1;
         introPanel.style.opacity = 1;
+        introPanel.classList.add("intro-centered");
         break;
 
       case 2: // Network Connections
         titleContainer.style.opacity = 0.5;
         sponsorsBar.style.opacity = 1;
+        introPanel.classList.remove("intro-centered");
         controls.autoRotateSpeed = 0.2;
 
         // Create connections between tech hubs
@@ -422,11 +433,13 @@ function showSection(sectionIndex) {
       case 3: // Judges
         judgesPanel.style.opacity = 1;
         judgesPanel.style.pointerEvents = "auto";
+        introPanel.classList.remove("intro-centered");
         controls.autoRotateSpeed = 0.1;
         break;
 
       case 4: // Registration
         registerCta.style.opacity = 1;
+        introPanel.classList.remove("intro-centered");
         controls.autoRotateSpeed = 1;
 
         // Create a burst of connections
@@ -499,6 +512,54 @@ function hideLoading() {
 
   // Make sure title is visible after loading
   titleContainer.style.opacity = 1;
+
+  // Start prize animation after a delay
+  setTimeout(() => {
+    animatePrizeAmount();
+  }, 1500);
+}
+
+// Animate prize amount with a simple count-up
+function animatePrizeAmount() {
+  const prizeCounter = document.getElementById("prize-counter");
+  if (!prizeCounter) return;
+
+  const finalValue = 1000000;
+  const duration = 3000; // 3 seconds
+  const startTime = Date.now();
+  const startValue = 0;
+
+  function updateCounter() {
+    const currentTime = Date.now();
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+
+    // Use an easing function for more natural animation (easeOutExpo)
+    const easedProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+
+    // Calculate current value
+    const currentValue = Math.floor(startValue + (finalValue - startValue) * easedProgress);
+
+    // Format as currency
+    const formattedValue = "$" + currentValue.toLocaleString();
+    prizeCounter.textContent = formattedValue;
+
+    // Add pulse effect at specific milestones
+    if (currentValue % 250000 === 0 || progress === 1) {
+      prizeCounter.style.transform = "scale(1.05)";
+      setTimeout(() => {
+        prizeCounter.style.transform = "scale(1)";
+      }, 150);
+    }
+
+    // Continue animation if not complete
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter);
+    }
+  }
+
+  // Start the animation
+  updateCounter();
 }
 
 // Animation loop
