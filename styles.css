@@ -599,9 +599,9 @@ body::before {
   transition: opacity 0.3s ease;
 }
 
-/* .sponsor-item:hover .sponsor-name {
+.sponsor-item:hover .sponsor-name {
   opacity: 1;
-} */
+}
 
 .sponsor-item:hover .sponsor-logo {
   filter: none;
