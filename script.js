@@ -8,6 +8,7 @@ let currentScrollSection = 0;
 const totalSections = 5;
 let isScrolling = false;
 let scrollTimeout;
+let particleSystem;
 
 // DOM elements
 const loadingScreen = document.querySelector(".loading-screen");
@@ -17,11 +18,15 @@ const sponsorsBar = document.querySelector(".sponsors-bar");
 const judgesPanel = document.querySelector(".judges-panel");
 const registerCta = document.querySelector(".register-cta");
 const navDots = document.querySelectorAll(".nav-dot");
+const starsContainer = document.getElementById("stars");
 
 // Initialize the scene
 function init() {
   // Create scene
   scene = new THREE.Scene();
+
+  // Create starry background
+  createStars();
 
   // Create camera
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -35,6 +40,7 @@ function init() {
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setClearColor(0x0c0521, 1);
 
   // Add ambient light
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -44,6 +50,11 @@ function init() {
   const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
   directionalLight.position.set(5, 3, 5);
   scene.add(directionalLight);
+
+  // Add point light for glow
+  const pointLight = new THREE.PointLight(0x3566a8, 1, 10);
+  pointLight.position.set(-5, 0, 5);
+  scene.add(pointLight);
 
   // Create controls
   controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -57,6 +68,9 @@ function init() {
 
   // Create Earth globe
   createGlobe();
+
+  // Add particle ring
+  createParticleRing();
 
   // Add population center points
   createPopulationPoints();
@@ -80,6 +94,36 @@ function init() {
   }, 3000);
 }
 
+// Create stars in the background
+function createStars() {
+  const starCount = 200;
+
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
+
+    // Random position
+    const top = Math.random() * 100;
+    const left = Math.random() * 100;
+
+    // Random size
+    const size = Math.random() * 3;
+
+    // Random delay for twinkling
+    const delay = Math.random() * 5;
+
+    // Set styles
+    star.style.top = `${top}%`;
+    star.style.left = `${left}%`;
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.animationDelay = `${delay}s`;
+
+    // Add to container
+    starsContainer.appendChild(star);
+  }
+}
+
 // Create the Earth globe
 function createGlobe() {
   // Create Earth with texture
@@ -90,6 +134,7 @@ function createGlobe() {
   const earthTexture = loader.load("https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg");
   const bumpMap = loader.load("https://unpkg.com/three-globe/example/img/earth-topology.png");
   const specularMap = loader.load("https://unpkg.com/three-globe/example/img/earth-water.png");
+  const cloudsTexture = loader.load("https://unpkg.com/three-globe/example/img/earth-clouds.png");
 
   // Create globe material
   const globeMaterial = new THREE.MeshPhongMaterial({
@@ -105,7 +150,7 @@ function createGlobe() {
   globe = new THREE.Mesh(globeGeometry, globeMaterial);
   scene.add(globe);
 
-  // Add subtle atmosphere instead of the previous glow effect
+  // Add subtle atmosphere
   const atmosphereGeometry = new THREE.SphereGeometry(globeRadius * 1.02, 64, 64);
   const atmosphereMaterial = new THREE.MeshPhongMaterial({
     color: 0x3566a8,
@@ -117,9 +162,68 @@ function createGlobe() {
   const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
   scene.add(atmosphere);
 
+  // Add clouds layer
+  const cloudsGeometry = new THREE.SphereGeometry(globeRadius * 1.01, 64, 64);
+  const cloudsMaterial = new THREE.MeshPhongMaterial({
+    map: cloudsTexture,
+    transparent: true,
+    opacity: 0.4,
+  });
+
+  const clouds = new THREE.Mesh(cloudsGeometry, cloudsMaterial);
+  scene.add(clouds);
+
+  // Animate clouds rotation slightly faster than the Earth
+  setInterval(() => {
+    clouds.rotation.y += 0.0002;
+  }, 10);
+
   // Add point groups
   scene.add(pointsGroup);
   scene.add(connectionsGroup);
+}
+
+// Create particle ring around the globe
+function createParticleRing() {
+  const particleCount = 1000;
+  const particles = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+
+  const ringRadius = globeRadius * 1.5;
+  const thickness = 0.5;
+
+  const colorOptions = [new THREE.Color(0xff9a9e), new THREE.Color(0xa18cd1), new THREE.Color(0x00ffcc)];
+
+  for (let i = 0; i < particleCount; i++) {
+    const i3 = i * 3;
+    const angle = Math.random() * Math.PI * 2;
+    const radius = ringRadius + (Math.random() - 0.5) * thickness;
+
+    // Position
+    positions[i3] = Math.cos(angle) * radius;
+    positions[i3 + 1] = (Math.random() - 0.5) * thickness;
+    positions[i3 + 2] = Math.sin(angle) * radius;
+
+    // Color
+    const color = colorOptions[Math.floor(Math.random() * colorOptions.length)];
+    colors[i3] = color.r;
+    colors[i3 + 1] = color.g;
+    colors[i3 + 2] = color.b;
+  }
+
+  particles.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  particles.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+  const particleMaterial = new THREE.PointsMaterial({
+    size: 0.05,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.8,
+  });
+
+  particleSystem = new THREE.Points(particles, particleMaterial);
+  scene.add(particleSystem);
 }
 
 // Create population center points
@@ -402,6 +506,12 @@ function animate() {
   requestAnimationFrame(animate);
 
   if (controls) controls.update();
+
+  // Rotate particle ring
+  if (particleSystem) {
+    particleSystem.rotation.y += 0.001;
+    particleSystem.rotation.x += 0.0005;
+  }
 
   // Pulse effect for points
   pointsGroup.children.forEach((point, index) => {
