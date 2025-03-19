@@ -582,3 +582,28 @@ body::before {
     transform: translateY(0);
   }
 }
+
+.sponsor-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.sponsor-name {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* .sponsor-item:hover .sponsor-name {
+  opacity: 1;
+} */
+
+.sponsor-item:hover .sponsor-logo {
+  filter: none;
+  transform: translateY(-5px);
+}
