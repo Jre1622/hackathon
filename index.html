@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The World's Largest Hackathon</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Three.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  </head>
+  <body>
+    <!-- Canvas for Three.js -->
+    <canvas id="globeCanvas"></canvas>
+
+    <!-- Title Container -->
+    <div class="title-container fade-in">
+      <h1 class="main-title">The World's Largest Hackathon</h1>
+      <p class="subtitle">Connecting innovators across continents</p>
+    </div>
+
+    <!-- Introduction panel -->
+    <div class="intro-panel">
+      <h2 class="intro-highlight">A Global Coding Adventure</h2>
+      <p class="intro-description">Join developers from around the world in this unprecedented virtual hackathon with over $1M in prizes. Build, collaborate, and innovate with the best in tech.</p>
+      <span class="adventure-tag">Virtual · Date TBD · $1M+ in Prizes</span>
+    </div>
+
+    <!-- Sponsors bar -->
+    <div class="sponsors-bar">
+      <p class="powered-by">Powered by</p>
+      <div class="sponsor-logos">
+        <span>@Supabase</span>
+        <span>@Netlify</span>
+        <span>@CloudflareDev</span>
+        <span>@GetSentry</span>
+        <span>@Loops</span>
+        <span>@AlgoFoundation</span>
+      </div>
+    </div>
+
+    <!-- Navigation dots -->
+    <div class="scroll-nav fade-in">
+      <div class="nav-dot active" data-index="0"></div>
+      <div class="nav-dot" data-index="1"></div>
+      <div class="nav-dot" data-index="2"></div>
+      <div class="nav-dot" data-index="3"></div>
+      <div class="nav-dot" data-index="4"></div>
+    </div>
+
+    <!-- Judges Panel (hidden initially) -->
+    <div class="judges-panel">
+      <h2>Meet Our Judges</h2>
+      <div class="judges-grid">
+        <div class="judge-card" data-name="levelsio">
+          <h3>@levelsio</h3>
+          <p class="judge-role">Indie Maker</p>
+          <div class="judge-social">
+            <i class="fab fa-twitter"></i>
+          </div>
+        </div>
+        <div class="judge-card" data-name="officiallocalK">
+          <h3>@officiallocalK</h3>
+          <p class="judge-role">AI Innovator</p>
+          <div class="judge-social">
+            <i class="fab fa-twitter"></i>
+          </div>
+        </div>
+        <div class="judge-card" data-name="saranormous">
+          <h3>@saranormous</h3>
+          <p class="judge-role">Tech Leader</p>
+          <div class="judge-social">
+            <i class="fab fa-twitter"></i>
+          </div>
+        </div>
+        <div class="judge-card" data-name="theo">
+          <h3>@theo</h3>
+          <p class="judge-role">Dev Educator</p>
+          <div class="judge-social">
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-youtube"></i>
+          </div>
+        </div>
+        <div class="judge-card" data-name="youyuxi">
+          <h3>@youyuxi</h3>
+          <p class="judge-role">Vue.js Creator</p>
+          <div class="judge-social">
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-github"></i>
+          </div>
+        </div>
+        <div class="judge-card" data-name="thisiskp_">
+          <h3>@thisiskp_</h3>
+          <p class="judge-role">Tech Innovator</p>
+          <div class="judge-social">
+            <i class="fab fa-twitter"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registration CTA -->
+    <div class="register-cta">
+      <a href="http://hackathon.dev" class="cta-button">Register Now</a>
+      <p>Hosted by <span class="host">@gregisenberg</span></p>
+    </div>
+
+    <!-- Loading screen -->
+    <div class="loading-screen">
+      <div class="loader"></div>
+      <p class="loading-text">Connecting to global network...</p>
+    </div>
+
+    <script src="populationCenters.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
